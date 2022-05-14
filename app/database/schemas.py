@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from pydantic import BaseModel
 from uuid import UUID
@@ -38,9 +39,26 @@ class AreaCreate(AreaBase):
     camera_uuid: UUID or str
 
 
+class AreaStatsBase(BaseModel):
+    count: float
+
+
+class AreaStatsCreate(AreaStatsBase):
+    area_uuid: UUID
+
+
+class AreaStats(AreaStatsBase):
+    uuid: UUID
+    time: datetime
+
+    class Config:
+        orm_mode = True
+
+
 class Area(AreaBase):
     uuid: UUID or str
     points: List[Point]
+    stats: List[AreaStats]
 
     class Config:
         orm_mode = True
@@ -56,10 +74,38 @@ class CameraCreate(CameraBase):
     pass
 
 
+# class CameraStatsBase(BaseModel):
+#     camera_uuid: UUID or str
+
+
+# class CameraStatsCreate(CameraStatsBase):
+#     pass
+
+
+class CameraStats(BaseModel):
+    uuid: UUID or str
+    time: datetime
+    points: List[Point]
+
+    class Config:
+        orm_mode = True
+
+
 class Camera(CameraBase):
     uuid: UUID or str
     areas: List[Area]
+    stats: List[CameraStats]
 
     class Config:
         orm_mode = True
 # endregion
+
+
+class CamStatsCreate(BaseModel):
+    uuid: UUID
+    points: List[PointBase]
+
+
+class StatsCreate(BaseModel):
+    areas: dict
+    camera: List[CamStatsCreate]

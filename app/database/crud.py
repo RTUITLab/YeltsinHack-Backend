@@ -1,4 +1,3 @@
-from os import name
 from uuid import UUID
 from sqlalchemy.orm import Session
 
@@ -48,3 +47,25 @@ def get_cameras(db: Session, uuid: UUID = None):
     if uuid:
         query = query.filter_by(uuid=uuid)
     return query.all()
+
+
+def create_stats(db: Session, stats: schemas.StatsCreate):
+    for uuid, count in stats.areas.items():
+        area_db = models.AreaStats(
+            area_uuid=uuid,
+            count=count
+        )
+        db.add(area_db)
+    for camera in stats.camera:
+        camera_db = models.CameraStats(
+            camera_uuid=camera.uuid,
+        )
+        db.add(camera_db)
+        db.flush()
+        for point in camera.points:
+            point_db = models.Point(
+                camera_stats_uuid=camera_db.uuid,
+                **point.dict()
+            )
+            db.add(point_db)
+    db.commit()
