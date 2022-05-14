@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./sql_app.db"
 
     # main app settings
-    debug: bool = False
+    debug_mode: bool = False
 
     # proxy settings
     root_path: str = ''

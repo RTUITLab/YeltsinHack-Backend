@@ -1,16 +1,47 @@
+from typing import List
 from pydantic import BaseModel
+from uuid import UUID
 
 
-class MessageBase(BaseModel):
-    message: str
+# region Token
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+# endregion
 
 
-class MessageCreate(MessageBase):
+# region Point
+class PointBase(BaseModel):
+    x: float
+    y: float
+
+
+class PointCreate(PointBase):
     pass
 
 
-class MessageDB(MessageBase):
-    id: int
+class Point(PointBase):
+    uuid: UUID or str
 
     class Config:
         orm_mode = True
+# endregion
+
+
+# region Area
+class AreaBase(BaseModel):
+    name: str
+    points: List[PointBase]
+
+
+class AreaCreate(AreaBase):
+    pass
+
+
+class Area(AreaBase):
+    uuid: UUID or str
+    points: List[Point]
+
+    class Config:
+        orm_mode = True
+# endregion
