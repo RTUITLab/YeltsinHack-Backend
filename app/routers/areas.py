@@ -31,3 +31,13 @@ async def create_areas(
 ):
     crud.create_area(db, area)
     return Response(status_code=204)
+
+
+@router.put("/{uuid}")
+async def update_areas(
+    uuid: UUID or str,
+    area: schemas.AreaBase,
+    db=Depends(get_db)
+):
+    crud.update_area(db, area, uuid)
+    return Response(status_code=204)

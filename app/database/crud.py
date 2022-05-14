@@ -1,3 +1,4 @@
+from os import name
 from uuid import UUID
 from sqlalchemy.orm import Session
 
@@ -12,6 +13,18 @@ def create_area(db: Session, area: schemas.AreaCreate):
         point_db = models.Point(area_uuid=area_db.uuid, **point.dict())
         db.add(point_db)
         db.flush()
+    db.commit()
+
+
+def update_area(db: Session, area: schemas.AreaBase, uuid: UUID):
+    area_db = db.query(models.Area).filter_by(uuid=uuid)
+    area_db.update({"name": area.name})
+
+    _ = db.query(models.Point).filter_by(area_uuid=uuid).delete()
+
+    for point in area.points:
+        point_db = models.Point(area_uuid=uuid, **point.dict())
+        db.add(point_db)
     db.commit()
 
 
