@@ -13,8 +13,12 @@ router = APIRouter(
 
 
 @router.get("", response_model=List[schemas.Area])
-async def get_areas(uuid: UUID = None, db=Depends(get_db)):
-    areas = crud.get_areas(db, uuid)
+async def get_areas(
+    uuid: UUID = None,
+    camera_uuid: UUID = None,
+    db=Depends(get_db)
+):
+    areas = crud.get_areas(db, uuid, camera_uuid)
     if not areas:
         raise HTTPException(status_code=404, detail="No areas")
     return areas

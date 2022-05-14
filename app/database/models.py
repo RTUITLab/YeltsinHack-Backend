@@ -7,13 +7,22 @@ from sqlalchemy.orm import relationship
 from .database import DataBase
 
 
+class Camera(DataBase):
+    __tablename__ = "camera"
+
+    uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, unique=True)
+
+    areas = relationship("Area")
+
+
 class Point(DataBase):
     __tablename__ = "point"
 
     uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     x = Column(Float)
     y = Column(Float)
-    area_id = Column(UUID(as_uuid=True), ForeignKey("area.uuid"))
+    area_uuid = Column(UUID(as_uuid=True), ForeignKey("area.uuid"))
 
 
 class Area(DataBase):
@@ -21,5 +30,6 @@ class Area(DataBase):
 
     uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String)
+    camera_uuid = Column(UUID(as_uuid=True), ForeignKey("camera.uuid"))
 
     points = relationship("Point")

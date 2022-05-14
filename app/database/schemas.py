@@ -17,7 +17,7 @@ class PointBase(BaseModel):
 
 
 class PointCreate(PointBase):
-    pass
+    area_uuid: UUID or str
 
 
 class Point(PointBase):
@@ -35,12 +35,30 @@ class AreaBase(BaseModel):
 
 
 class AreaCreate(AreaBase):
-    pass
+    camera_uuid: UUID or str
 
 
 class Area(AreaBase):
     uuid: UUID or str
     points: List[Point]
+
+    class Config:
+        orm_mode = True
+# endregion
+
+
+# region Camera
+class CameraBase(BaseModel):
+    name: str
+
+
+class CameraCreate(CameraBase):
+    pass
+
+
+class Camera(CameraBase):
+    uuid: UUID or str
+    areas: List[Area]
 
     class Config:
         orm_mode = True
