@@ -10,7 +10,7 @@ from app.dependencies import get_settings
 
 settings = get_settings()
 
-app = FastAPI(root_path=settings.root_path)
+app = FastAPI(root_path=settings.root_path, redoc_url=None)
 
 # include all routers
 plugins = [f[:-3] for f in resources.contents("app.routers")
@@ -28,6 +28,9 @@ if settings.debug_mode:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+else:
+    app.docs_url = None
+    app.root_path = '/api'
 
 
 @app.middleware("http")
