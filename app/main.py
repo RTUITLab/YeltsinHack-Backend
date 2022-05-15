@@ -28,9 +28,6 @@ if settings.debug_mode:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-else:
-    app.docs_url = None
-    app.root_path = '/api'
 
 
 @app.middleware("http")
