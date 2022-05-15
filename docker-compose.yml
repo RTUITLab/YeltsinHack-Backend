@@ -3,20 +3,4 @@ version: '3.9'
 
 services:
   backend:
-    build: .
-    command: bash -c "python migrate.py && python run.py"
-    environment:
-      DEBUG_MODE: true
-      DATABASE_URL: postgresql+psycopg2://postgres:password@database:5432/museum
-    ports:
-      - 8001:8000
-  database:
-      image: postgres:latest
-      environment:
-        POSTGRES_PASSWORD: password
-        POSTGRES_DB: museum
-      volumes:
-        - pg_data:/var/lib/postgresql/data
-
-volumes:
-  pg_data: {}
+    image: ghcr.io/rtuitlab/eltsin/backend

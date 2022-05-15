@@ -1,0 +1,9 @@
+version: '3.9'
+
+
+services:
+  backend:
+    command: bash -c "python migrate.py && python run.py"
+    environment:
+      DEBUG_MODE: ${DEBUG_MODE?}
+      DATABASE_URL: ${DATABASE_URL?}
